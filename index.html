@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<title>Fortblog: Битва Чемпионов</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div id="game">
+  <h1>Fortblog: Битва Чемпионов</h1>
+
+  <!-- Главное меню -->
+  <div id="main-menu">
+    <button id="btnCampaign">Башня</button>
+    <button id="btnQuickFight">Быстрый бой</button>
+    <button id="btnRecords">Рекорды</button>
+    <button id="btnShop">Магазин</button>
+    <button id="btnCollection">Коллекция</button>
+  </div>
+  <!-- Меню выбора типа башни -->
+<div id="tower-type-menu" style="display:none; padding:20px; text-align:center;">
+  <button id="btnTowerShlyan">БАШНЯ ШЛЯНА</button>
+  <button id="btnTowerBut">БАШНЯ ДОКТОРА БУТА</button>
+  <button id="btnBackToMain">НАЗАД В МЕНЮ</button>
+</div>
+<div id="tower-scene" style="display:none; padding:20px;">
+  <div style="max-width:480px; margin:auto;">
+    <div id="towerContainer" style="position:relative; width:100%; height:240px; background:#111; border:2px solid #333; border-radius:12px; overflow:hidden;">
+      <img id="scenePlayer" src="" style="position:absolute; bottom:0; left:0; width:130px; z-index:2;">
+      <img id="sceneTower" src="tower.png" style="position:absolute; bottom:0; right:0; height:240px; z-index:1;">
+      <div id="sceneText" style="
+        position:absolute;
+        top:20px;
+        right:20px;
+        color:white;
+        font-size:18px;
+        text-align:right;
+        text-shadow:2px 2px 4px #000;
+        max-width: 160px;
+        z-index:3;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 1s ease;
+      ">
+        <div style="font-weight:bold; font-size:22px;">Башня ждёт...</div>
+        <div style="margin-top:10px;">Ты готов пройти путь до вершины и встретиться с АБСОЛЮТНЫМ ШЛЯНОМ?</div>
+      </div>
+    </div>
+    <button id="btnStartTower" style="margin-top:20px; width:100%;">В бой!</button>
+  </div>
+</div>
+<!-- Магазин -->
+<div id="shop" style="display:none;">
+  <h2>Магазин скинов</h2>
+  <p>Монет: <span id="coinCount">0</span></p>
+  <div id="shopList" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;"></div>
+  <button id="btnBackFromShop">Назад</button>
+</div>
+  <!-- Выбор бойца -->
+  <div id="fighter-select" style="display:none;">
+    <h3>Выбери бойца:</h3>
+    <div id="rosterGrid" class="roster-grid"></div>
+    <div class="fighter-select" id="fighter-list"></div>
+      <button onclick="showMainMenu()">Назад</button>
+  </div>
+
+  <!-- Выбор скина -->
+  <div id="skin-select" style="display:none;">
+    <h3>Выбери облик:</h3>
+    <div id="skins"></div>
+  </div>
+
+  <!-- Бой -->
+  <div id="battle" style="display:none;">
+    <div id="towerProgress" style="margin:10px; font-weight:bold; display:none;"></div>
+    <div id="arena" style="height:250px;">
+<div class="character" id="playerChar">
+  <div class="bar"><div class="hp" id="playerHP"></div></div>
+  <div class="bar"><div class="vsc" id="playerVSC"></div></div>
+  <img id="playerImg" src="" alt="Игрок" draggable="false" />
+</div>
+      	<div class="character" id="enemyChar">
+
+  <div class="bar"><div class="hp" id="enemyHP"></div></div>
+  <div class="bar"><div class="vsc" id="enemyVSC"></div></div>
+<img id="enemyImg" class="enemyImg" src="" alt="Враг" draggable="false" />
+</div>
+    </div>
+    <div id="actions"></div>
+    <div id="log"></div>
+  </div>
+
+  <!-- Результаты -->
+  <div id="result" style="display:none;">
+    <h2 id="resultText"></h2>
+    <p id="stats"></p>
+    <button id="btnToMenu">В меню</button>
+    <button id="btnReplay">Повторить бой</button>
+    <button id="btnToRoster">В ростер</button>
+  </div>
+</div>
+  <div id="records" style="display:none;">
+  <h2>Рекорды Башни</h2>
+  <div id="recordsList"></div>
+  <button id="btnBackFromRecords">Назад</button>
+</div>
+<!-- Коллекция -->
+<div id="collection" style="display:none;">
+  <h2>Коллекция</h2>
+  <div id="collectionList" style="display:flex; flex-wrap:wrap; justify-content:center; gap:20px;"></div>
+  <button id="btnBackFromCollection">Назад</button>
+</div>
+<script src="main.js"></script>
+
+<!-- Сцена faceoff перед боем -->
+<div id="faceoff-scene" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:9999; justify-content:center; align-items:center; flex-direction:column;">
+  <div style="display:flex; justify-content:space-around; align-items:center; width:100%; max-width:800px; flex-wrap:wrap; gap:10px;">
+    <img id="faceoff-player" style="width:120px; transform:scaleX(1);">
+    <img src="vs.png" alt="VS" style="width:100px; height:auto; filter: drop-shadow(0 0 10px violet);" />
+    <img id="faceoff-enemy" style="width:120px; transform:scaleX(-1);">
+  </div>
+  <div id="faceoff-countdown" style="color:white; font-size:48px; font-weight:bold; margin-top:20px; text-shadow:2px 2px 4px #000;"></div>
+</div>
+<div id="loreModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000a; z-index:9999; justify-content:center; align-items:center;">
+  <div style="background:#222; color:#fff; padding:20px; border-radius:12px; max-width:300px; box-shadow:0 0 10px #000;">
+    <h3 id="loreTitle"></h3>
+    <p id="loreText" style="font-size:14px;"></p>
+    <button onclick="document.getElementById('loreModal').style.display='none'">Закрыть</button>
+  </div>
+</div>
+<!-- Анимация открытия скина -->
+<div id="skinRevealOverlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:black; z-index:9999; justify-content:center; align-items:center;">
+  <img id="skinRevealImg" src="" style="width:200px; border:3px solid gold; border-radius:12px;" />
+</div>
+</body>
+</html>

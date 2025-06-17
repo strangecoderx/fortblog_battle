@@ -1,0 +1,415 @@
+* { box-sizing: border-box; }
+  body {
+    margin: 0; background: #111; color: #fff; font-family: "BattleFest", sans-serif; text-align: center;
+  }
+  #game {
+    max-width: 480px; margin: auto; padding: 10px;
+  }
+  button {
+    cursor: pointer;
+    background: #222;
+    border: 1px solid #444;
+    border-radius: 10px;
+    color: white;
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px 0;
+    width: 90%;
+  }
+  .fighter-select, #skins {
+    display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  }
+  .roster-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+.flipped {
+  transform: scaleX(-1);
+}
+.damage-popup {
+  position: absolute;
+  color: yellow;
+  font-size: 20px;
+  font-weight: bold;
+  animation: floatUp 0.8s ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+  text-shadow: 1px 1px 2px #000;
+
+  transform: translateX(-50%);
+  left: 50%;
+  top: 0;
+}
+
+.damage-popup.no-flip {
+  transform: translateX(-50%) scaleX(1) !important;
+}
+.fighter-card {
+  width: 100px;
+  text-align: center;
+  cursor: pointer;
+  border: 3px solid transparent;
+  border-radius: 12px;
+  padding: 8px;
+  background: linear-gradient(to bottom, #871F78, #2a2a2a);
+  transition: all 0.2s ease;
+  box-shadow: 0 0 4px #000;
+}
+
+.fighter-card:hover {
+  border-color: #a64dff;
+  box-shadow: 0 0 10px #a64dff;
+  transform: scale(1.05);
+}
+
+.fighter-card img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  object-fit: cover;
+  background-color: #000;
+}
+
+.fighter-name {
+  margin-top: 6px;
+  font-size: 14px;
+  color: deeppink !important;
+  text-shadow: 1px 1px 2px #000;
+  word-break: break-word;
+  white-space: normal;
+}
+  @keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+#scenePlayer.animate-in {
+  animation: slideInLeft 1s ease-out;
+}
+  @keyframes shinyBorder {
+  0% { border-color: #a64dff; box-shadow: 0 0 4px #a64dff; }
+  50% { border-color: #d966ff; box-shadow: 0 0 12px #e580ff; }
+  100% { border-color: #a64dff; box-shadow: 0 0 4px #a64dff; }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; transform: scale(0.7); }
+}
+.fade-out {
+  animation: fadeOut 0.6s forwards;
+}
+
+.tower-skin {
+  animation: shinyBorder 1.5s infinite;
+  border: 3px solid #a64dff;
+  border-radius: 8px;
+}
+.butbot-skin {
+  border: 2px solid deeppink;
+  animation: glowPink 1.5s infinite;
+}
+
+@keyframes glowPink {
+  0% { box-shadow: 0 0 4px deeppink; }
+  50% { box-shadow: 0 0 12px hotpink; }
+  100% { box-shadow: 0 0 4px deeppink; }
+}
+  #arena {
+    background-size: cover;
+    background-position: center;
+    padding-top: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+  }
+.character {
+  display: inline-block;
+  margin: 0 10px;
+  vertical-align: top;
+  user-select: none;
+  position: relative;
+  top: 20px; /* персонажи опущены вниз */
+}
+  .character img {
+    width: 140px;
+    height: 140px;
+    object-fit: contain;
+  }
+  .enemyImg {
+    .tower-skin {
+  border: 2px solid cyan;
+  animation: glowTower 1.5s infinite;
+}
+
+@keyframes glowTower {
+  0% { box-shadow: 0 0 4px cyan; }
+  50% { box-shadow: 0 0 12px cyan; }
+  100% { box-shadow: 0 0 4px cyan; }
+}
+
+.butbot-skin {
+  border: 2px solid deeppink;
+  animation: glowPink 1.5s infinite;
+}
+
+@keyframes glowPink {
+  0% { box-shadow: 0 0 4px deeppink; }
+  50% { box-shadow: 0 0 12px hotpink; }
+  100% { box-shadow: 0 0 4px deeppink; }
+}
+  }
+  .damage-popup {
+  position: absolute;
+  color: yellow;
+  font-size: 20px;
+  font-weight: bold;
+  animation: floatUp 0.8s ease-out forwards;
+  pointer-events: none;
+  z-index: 10;
+  text-shadow: 1px 1px 2px #000;
+}
+
+@keyframes floatUp {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-40px); }
+}
+@keyframes arenaFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.arena-animate {
+  animation: arenaFadeIn 1s ease-out;
+}
+@keyframes textFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.collection-card {
+  width: 140px;
+  background: #1a1a1a;
+  border: 2px solid #444;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 0 6px #000;
+  transition: transform 0.2s ease;
+}
+.collection-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px #a64dff;
+}
+.collection-card-title {
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: white;
+  text-shadow: 1px 1px 3px #000;
+}
+.collection-skins {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 6px;
+}
+.collection-skins img {
+  width: 50px;
+  height: 50px;
+  border-radius: 6px;
+  background: black;
+  object-fit: cover;
+  border: 2px solid #222;
+}
+.locked-skin {
+  opacity: 0.3;
+  filter: grayscale(100%);
+}
+@keyframes buttonPop {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.action-button-animate {
+  animation: buttonPop 0.3s ease-out;
+}
+.unlocked-skin {
+  border: 2px solid violet;
+  animation: shinyBorder 1.5s infinite;
+}
+.tower-text-animate {
+  animation: textFadeInUp 1s ease-out forwards;
+}
+.flash-hit {
+  animation: flash 0.3s;
+}
+@keyframes skinReveal {
+  0% { transform: scale(0.7); opacity: 0; filter: brightness(1); }
+  30% { transform: scale(1.2); opacity: 1; filter: brightness(2) drop-shadow(0 0 10px gold); }
+  100% { transform: scale(1); filter: brightness(1.2); }
+}
+.skin-reveal-anim {
+  animation: skinReveal 1.2s ease-out;
+  z-index: 10;
+}
+.rage-glow {
+  animation: greenGlow 1s infinite alternate;
+}
+@keyframes greenGlow {
+  0% { filter: drop-shadow(0 0 5px limegreen); }
+  100% { filter: drop-shadow(0 0 15px lime); }
+}
+@font-face {
+  font-family: 'BattleFest';
+  src: url('fortnitebattlefest.ttf') format('truetype');
+}
+@keyframes shinyBorder {
+  0% { box-shadow: 0 0 4px #a64dff; }
+  50% { box-shadow: 0 0 12px #e580ff; }
+  100% { box-shadow: 0 0 4px #a64dff; }
+}
+@keyframes flash {
+  0% { filter: brightness(1); }
+  50% { filter: brightness(2); }
+  100% { filter: brightness(1); }
+}
+@keyframes bossGlow {
+  0% { filter: drop-shadow(0 0 5px violet); }
+  50% { filter: drop-shadow(0 0 15px purple); }
+  100% { filter: drop-shadow(0 0 5px violet); }
+}
+.shop-skin {
+  border: 2px solid gold;
+  animation: goldShine 2s infinite;
+}
+@keyframes goldShine {
+  0% { box-shadow: 0 0 4px gold; }
+  50% { box-shadow: 0 0 12px yellow; }
+  100% { box-shadow: 0 0 4px gold; }
+}
+.boss-glow {
+  animation: bossGlow 2s infinite;
+}
+  .bar {
+    height: 12px;
+    background: #555;
+    margin: 6px 0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .hp {
+    background: red;
+    height: 100%;
+    width: 100%;
+  }
+  @keyframes fighterPopIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.fighter-card.animate-in {
+  animation: fighterPopIn 0.4s ease-out;
+}
+  .shop-card {
+  width: 140px;
+  background: #1a1a1a;
+  border: 2px solid #555;
+  border-radius: 12px;
+  padding: 10px;
+  text-align: center;
+  box-shadow: 0 0 6px #000;
+  transition: transform 0.2s ease;
+}
+.shop-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 12px gold;
+}
+.shop-card img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 8px;
+  background-color: #000;
+}
+.shop-card-name {
+  margin-top: 8px;
+  font-weight: bold;
+  color: gold;
+  text-shadow: 1px 1px 3px #000;
+  font-size: 14px;
+}
+.shop-card-price {
+  color: #ccc;
+  margin: 5px 0;
+  font-size: 13px;
+}
+  .vsc {
+    background: linear-gradient(to right, cyan, lime);
+    height: 100%;
+    width: 100%;
+  }
+  #actions button:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  #log {
+    font-size: 14px;
+    min-height: 50px;
+    margin-top: 10px;
+    min-height: 48px;
+  }
+.silhouette {
+  filter: brightness(0) drop-shadow(0 0 20px violet);
+  opacity: 0.7;
+  animation: scaleIn 0.8s ease-out;
+}
+@keyframes scaleIn {
+  from { transform: scale(0.5); opacity: 0; }
+  to { transform: scale(1); opacity: 0.7; }
+}
+@media (max-width: 480px) {
+  #faceoff-scene img {
+    width: 40vw; /* максимум 40% ширины экрана */
+  }
+
+  #faceoff-scene img[src*="vs.png"] {
+    width: 16vw; /* иконка VS — поменьше */
+  }
+
+  #faceoff-countdown {
+    font-size: 36px;
+  }
+}
+  #main-menu {
+    margin-top: 30px;
+  }
